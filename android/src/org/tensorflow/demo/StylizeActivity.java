@@ -18,6 +18,7 @@ package org.tensorflow.demo;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -601,5 +602,10 @@ public class StylizeActivity extends CameraActivity implements OnImageAvailableL
     lines.add("Initialized size: " + initializedSize);
 
     borderedText.drawLines(canvas, 10, canvas.getHeight() - 10, lines);
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
   }
 }

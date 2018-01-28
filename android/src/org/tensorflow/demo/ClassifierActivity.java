@@ -16,6 +16,7 @@
 
 package org.tensorflow.demo;
 
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -213,5 +214,10 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
 
       borderedText.drawLines(canvas, 10, canvas.getHeight() - 10, lines);
     }
+  }
+
+  @Override
+  public void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
   }
 }

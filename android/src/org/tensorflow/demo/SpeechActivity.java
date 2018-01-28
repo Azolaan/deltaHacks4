@@ -34,6 +34,7 @@ package org.tensorflow.demo;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -353,5 +354,10 @@ public class SpeechActivity extends Activity {
     }
 
     Log.v(LOG_TAG, "End recognition");
+  }
+  @Override
+  public void onConfigurationChanged(Configuration newConfig){
+    super.onConfigurationChanged(newConfig);
+
   }
 }
