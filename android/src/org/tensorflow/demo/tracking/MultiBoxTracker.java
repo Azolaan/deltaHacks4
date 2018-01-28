@@ -24,6 +24,7 @@ import android.graphics.Paint.Cap;
 import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+import android.speech.tts.TextToSpeech;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
@@ -31,6 +32,7 @@ import android.util.TypedValue;
 import android.widget.Toast;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Queue;
 import org.tensorflow.demo.Classifier.Recognition;
 import org.tensorflow.demo.env.BorderedText;
@@ -95,6 +97,8 @@ public class MultiBoxTracker {
   private int sensorOrientation;
   private Context context;
 
+  private TextToSpeech myTTS;
+
   public MultiBoxTracker(final Context context) {
     this.context = context;
     for (final int color : COLORS) {
@@ -112,6 +116,15 @@ public class MultiBoxTracker {
         TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, TEXT_SIZE_DIP, context.getResources().getDisplayMetrics());
     borderedText = new BorderedText(textSizePx);
+
+    myTTS = new TextToSpeech(this.context, new TextToSpeech.OnInitListener() {
+      @Override
+      public void onInit(int i) {
+        if(i != TextToSpeech.ERROR) {
+          myTTS.setLanguage(Locale.CANADA);
+        }
+      }
+    });
   }
 
   private Matrix getFrameToCanvasMatrix() {
@@ -159,6 +172,10 @@ public class MultiBoxTracker {
       final List<Recognition> results, final byte[] frame, final long timestamp) {
     logger.i("Processing %d results from %d", results.size(), timestamp);
     processResults(timestamp, results, frame);
+    if (results.size() > 0) {
+//      Log.d("TESTTESTTESTTESTOCEAN", results.get(0).getTitle());
+      myTTS.speak(results.get(0).getTitle(), TextToSpeech.QUEUE_FLUSH, null, null);
+    }
   }
 
   public synchronized void draw(final Canvas canvas) {
@@ -190,7 +207,7 @@ public class MultiBoxTracker {
           !TextUtils.isEmpty(recognition.title)
               ? String.format("%s %.2f", recognition.title, recognition.detectionConfidence)
               : String.format("%.2f", recognition.detectionConfidence);
-      Log.v(recognition.title, "Hi i'm here!");
+//      Log.v(recognition.title, "Hi i'm here!");
       borderedText.drawText(canvas, trackedPos.left + cornerSize, trackedPos.bottom, labelString);
     }
   }
